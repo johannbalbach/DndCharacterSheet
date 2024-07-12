@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DndCharacterSheetAPI.Models.DTO
+namespace DndCharacterSheetAPI.Application.Models.DTO.User
 {
     public class LoginCredentials
     {

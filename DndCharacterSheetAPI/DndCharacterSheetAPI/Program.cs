@@ -1,8 +1,10 @@
 using DndCharacterSheetAPI.Application.Enums;
+using DndCharacterSheetAPI.Application.Interfaces;
 using DndCharacterSheetAPI.Domain.Context;
 using DndCharacterSheetAPI.JWT;
 using DndCharacterSheetAPI.Mapper;
 using DndCharacterSheetAPI.Middleware;
+using DndCharacterSheetAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -88,6 +90,10 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
+
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDictionaryService, DictionaryService>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));

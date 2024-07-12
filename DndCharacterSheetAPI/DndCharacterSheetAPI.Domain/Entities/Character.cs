@@ -27,9 +27,12 @@ namespace DndCharacterSheetAPI.Domain.Entities
         public User User { get; set; }
         public Guid UserId { get; set; }
 
-        public int CalculateModifier(int attribute)
-        {
-            return attribute % 2 - 5;
-        }
+        public string? Age { get; set; }
+        public string? Height { get; set; }
+        public string? Weight { get; set; }
+        public string? Eyes { get; set; }
+        public string? Skin { get; set; }
+        public string? Hair { get; set; }
+        public List<string> Notes { get; set; } = new List<string>();
     }
 }
