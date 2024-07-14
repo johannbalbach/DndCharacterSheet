@@ -9,6 +9,11 @@ appsettings.Develop.json
 
 # Visual Studio Code
 .vscode
+/dnd-app/node_modules
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Rider
 .idea
