@@ -17,6 +17,7 @@ namespace DndCharacterSheetAPI.Services
             _context = context;
             _mapper = mapper;
         }
+
         public async Task<List<TDto>> GetAll<TEntity, TDto>(params Expression<Func<TEntity, object>>[] includes) where TEntity : class
         {
             IQueryable<TEntity> query = _context.Set<TEntity>();
@@ -49,7 +50,7 @@ namespace DndCharacterSheetAPI.Services
         public async Task<TDto> Create<TEntity, TCreateDto, TDto>(TCreateDto createDto) where TEntity : class
         {
             var entity = _mapper.Map<TEntity>(createDto);
-            _context.Set<TEntity>().Add(entity);
+            await _context.Set<TEntity>().AddAsync(entity);
             await _context.SaveChangesAsync();
 
             return _mapper.Map<TDto>(entity);

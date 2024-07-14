@@ -7,6 +7,7 @@ using DndCharacterSheetAPI.Models.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DndCharacterSheetAPI.Controllers
 {
@@ -33,8 +34,8 @@ namespace DndCharacterSheetAPI.Controllers
         [Route("GetCharacter/{id}")]
         public async Task<CharacterFullViewModel> GetCharacter([FromRoute] Guid id)
         {
-            var userEmailClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (userEmailClaim == null)
+            var usernameClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name.ToString())?.Value;
+            if (usernameClaim == null)
                 throw new InvalidTokenException("Token not found");
 
             return await _characterService.GetCharacter(id);
@@ -45,11 +46,11 @@ namespace DndCharacterSheetAPI.Controllers
         [Route("CreateCharacter")]
         public async Task<CharacterFullViewModel> CreateCharacter(CharacterDTO character)
         {
-            var userEmailClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (userEmailClaim == null)
+            var usernameClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name.ToString())?.Value;
+            if (usernameClaim == null)
                 throw new InvalidTokenException("Token not found");
 
-            return await _characterService.CreateCharacter(character);
+            return await _characterService.CreateCharacter(character, usernameClaim);
         }
 
         [HttpPut]
@@ -57,8 +58,8 @@ namespace DndCharacterSheetAPI.Controllers
         [Route("UpdateCharacter/{id}")]
         public async Task<Response> UpdateCharacter([FromRoute] Guid id, CharacterDTO character)
         {
-            var userEmailClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (userEmailClaim == null)
+            var usernameClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name.ToString())?.Value;
+            if (usernameClaim == null)
                 throw new InvalidTokenException("Token not found");
 
             await _characterService.UpdateCharacter(id, character);
@@ -70,8 +71,8 @@ namespace DndCharacterSheetAPI.Controllers
         [Route("DeleteCharacter/{id}")]
         public async Task<Response> DeleteCharacter([FromRoute] Guid id)
         {
-            var userEmailClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-            if (userEmailClaim == null)
+            var usernameClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name.ToString())?.Value;
+            if (usernameClaim == null)
                 throw new InvalidTokenException("Token not found");
 
             await _characterService.DeleteCharacter(id);

@@ -17,7 +17,7 @@ namespace DndCharacterSheetAPI.Domain.Entities
         public Origin Origin { get; set; }
         public string? OutlookText { get; set; }
         public int Strength { get; set; }
-        public int Agility { get; set; }
+        public int Dexterity { get; set; }
         public int Constitution { get; set; }
         public int Intelligence { get; set; }
         public int Wisdom { get; set; }
@@ -26,7 +26,6 @@ namespace DndCharacterSheetAPI.Domain.Entities
         public List<SavingThrow> SavingThrows { get; set; } = new List<SavingThrow>();
         public User User { get; set; }
         public Guid UserId { get; set; }
-
         public string? Age { get; set; }
         public string? Height { get; set; }
         public string? Weight { get; set; }

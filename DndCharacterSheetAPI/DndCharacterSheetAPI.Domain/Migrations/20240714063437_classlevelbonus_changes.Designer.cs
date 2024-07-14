@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DndCharacterSheetAPI.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DndCharacterSheetAPI.Domain.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240714063437_classlevelbonus_changes")]
+    partial class classlevelbonus_changes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,6 +35,9 @@ namespace DndCharacterSheetAPI.Domain.Migrations
                     b.Property<string>("Age")
                         .HasColumnType("text");
 
+                    b.Property<int>("Agility")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("CharacterClassId")
                         .HasColumnType("uuid");
 
@@ -39,9 +45,6 @@ namespace DndCharacterSheetAPI.Domain.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Constitution")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Dexterity")
                         .HasColumnType("integer");
 
                     b.Property<int>("Exp")

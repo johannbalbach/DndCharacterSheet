@@ -14,7 +14,7 @@ namespace DndCharacterSheetAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class DictionaryController: ControllerBase
+    public class DictionaryController : ControllerBase
     {
         private readonly IDictionaryService _dictionaryService;
 
@@ -119,6 +119,49 @@ namespace DndCharacterSheetAPI.Controllers
         public async Task<Response> DeleteOrigin([FromRoute] Guid id)
         {
             await _dictionaryService.Delete<Origin>(id);
+            return new Response { Status = "200", Message = "VSE OK" };
+        }
+        [HttpGet]
+        [Authorize]
+        [Route("GetAllClasses")]
+        public async Task<List<CharacterClassWithIdDTO>> GetAllClasses()
+        {
+            return await _dictionaryService.GetAll<CharacterClass, CharacterClassWithIdDTO>(
+                cc => cc.LevelBonuses, cc => cc.ClassSkillProficiencies);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("GetClass/{id}")]
+        public async Task<CharacterClassWithIdDTO> GetClass([FromRoute] Guid id)
+        {
+            return await _dictionaryService.GetById<CharacterClass, CharacterClassWithIdDTO>(
+                id, cc => cc.LevelBonuses, cc => cc.ClassSkillProficiencies);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [Route("CreateClass")]
+        public async Task<CharacterClassWithIdDTO> CreateClass(CharacterClassDTO characterClassDto)
+        {
+            return await _dictionaryService.Create<CharacterClass, CharacterClassDTO, CharacterClassWithIdDTO>(characterClassDto);
+        }
+
+        [HttpPut]
+        [Authorize(Policy = "Previleged")]
+        [Route("UpdateClass/{id}")]
+        public async Task<Response> UpdateClass([FromRoute] Guid id, CharacterClassDTO characterClassDto)
+        {
+            await _dictionaryService.Update<CharacterClass, CharacterClassDTO>(id, characterClassDto);
+            return new Response { Status = "200", Message = "VSE OK" };
+        }
+
+        [HttpDelete]
+        [Authorize(Policy = "Previleged")]
+        [Route("DeleteClass/{id}")]
+        public async Task<Response> DeleteClass([FromRoute] Guid id)
+        {
+            await _dictionaryService.Delete<CharacterClass>(id);
             return new Response { Status = "200", Message = "VSE OK" };
         }
     }

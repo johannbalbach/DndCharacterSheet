@@ -6,7 +6,7 @@ namespace DndCharacterSheetAPI.Application.Interfaces
     {
         Task<CharactersList> GetAllCharacters();
         Task<CharacterFullViewModel> GetCharacter(Guid id);
-        Task<CharacterFullViewModel> CreateCharacter(CharacterDTO characterDto);
+        Task<CharacterFullViewModel> CreateCharacter(CharacterDTO characterDto, string email);
         Task UpdateCharacter(Guid id, CharacterDTO characterDto);
         Task DeleteCharacter(Guid id);
     }
