@@ -94,6 +94,8 @@ builder.Services.AddProblemDetails();
 builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDictionaryService, DictionaryService>();
+builder.Services.AddScoped<IExternalSystemService, ExternalSystemService>();
+builder.Services.AddHttpClient<IExternalSystemService, ExternalSystemService>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
