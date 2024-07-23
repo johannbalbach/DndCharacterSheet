@@ -5,13 +5,13 @@ namespace DndCharacterSheetAPI.JWT
 {
     public class JwtConfigurations
     {
-        public const string Issuer = "Issuer";
-        public const string Audience = "Audience";
-        public const string Key = "DNDSECRETPARTYSECRETKEYVALUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE";
-        public const int AccessLifeTime = 60;
-        public const int RefreshLifeTime = AccessLifeTime * 24;
+        public string Issuer { get; set; }
+        public string Audience { get; set; }
+        public string Key { get; set; }
+        public int AccessLifeTime { get; set; }
+        public int RefreshLifeTime { get; set; }
 
-        public static SymmetricSecurityKey GetSymmetricSecurityKey()
+        public static SymmetricSecurityKey GetSymmetricSecurityKey(string Key = "")
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Key));
         }

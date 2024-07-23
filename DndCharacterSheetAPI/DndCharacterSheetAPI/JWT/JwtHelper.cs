@@ -17,10 +17,11 @@ namespace DndCharacterSheetAPI.JWT
             });
         }
 
-        public static string GetNewToken(string userName, int lifeTime, Roles userRole = Roles.Player)
+        public static string GetNewToken(string userName, JwtConfigurations _jwtConfiguration, Roles userRole = Roles.Player)
         {
-            var issuer = JwtConfigurations.Issuer;
-            var audience = JwtConfigurations.Audience;
+            var issuer = _jwtConfiguration.Issuer;
+            var audience = _jwtConfiguration.Audience;
+            var lifeTime = _jwtConfiguration.AccessLifeTime;
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -28,7 +29,7 @@ namespace DndCharacterSheetAPI.JWT
                 Issuer = issuer,
                 Audience = audience,
                 Expires = DateTime.UtcNow.AddMinutes(lifeTime),
-                SigningCredentials = new SigningCredentials(JwtConfigurations.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha512Signature)
+                SigningCredentials = new SigningCredentials(JwtConfigurations.GetSymmetricSecurityKey(_jwtConfiguration.Key), SecurityAlgorithms.HmacSha512Signature)
             };
 
             var tokenHandler = new JwtSecurityTokenHandler();

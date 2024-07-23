@@ -13,6 +13,7 @@ api.interceptors.request.use(
             config.headers['Authorization'] = `Bearer ${token}`;
         }
         config.headers['Content-Type'] = 'application/json';
+        config.headers['Access-Control-Allow-Origin'] = '*';
         return config;
     },
     (error) => {

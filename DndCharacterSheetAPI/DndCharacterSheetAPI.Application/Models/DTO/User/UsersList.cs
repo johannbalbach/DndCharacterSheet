@@ -1,4 +1,5 @@
 ﻿using DndCharacterSheetAPI.Application.Enums;
+using DndCharacterSheetAPI.Application.Models.DTO.Character;
 
 namespace DndCharacterSheetAPI.Application.Models.DTO.User
 {
@@ -7,6 +8,7 @@ namespace DndCharacterSheetAPI.Application.Models.DTO.User
         public Guid Id { get; set; }
         public string UserName { get; set; }
         public Roles UserRole { get; set; }
+        public List<Guid> characters { get; set; } = new List<Guid>();
     }
     public class UsersList
     {

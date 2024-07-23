@@ -9,6 +9,7 @@ using DndCharacterSheetAPI.JWT;
 using DndCharacterSheetAPI.Models.DTO;
 using DndCharacterSheetAPI.Models.Exceptions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -18,11 +19,13 @@ namespace DndCharacterSheetAPI.Services
     {
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly JwtConfigurations _jwtConfigurations;
 
-        public UserService(AppDbContext context, IMapper mapper)
+        public UserService(AppDbContext context, IMapper mapper, IOptions<JwtConfigurations> jwtConfigurations)
         {
             _context = context;
             _mapper = mapper;
+            _jwtConfigurations = jwtConfigurations.Value;
         }
 
         public async Task<TokenResponse> Register(UserRegisterModel userDto)
@@ -30,7 +33,7 @@ namespace DndCharacterSheetAPI.Services
             var user = new User
             {
                 Id = new Guid(),
-                UserName = userDto.UserName.Normalize(),
+                UserName = userDto.UserName,
                 Password = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(userDto.Password))),
                 UserRole = userDto.UserRole
             };
@@ -62,9 +65,24 @@ namespace DndCharacterSheetAPI.Services
             if (user.Password != login.Password)
                 throw new BadRequestException("wrong password, pls try again");
 
-            var token = JwtHelper.GetNewToken(login.UserName, JwtConfigurations.AccessLifeTime, user.UserRole);
+            var token = JwtHelper.GetNewToken(login.UserName, _jwtConfigurations, user.UserRole);
 
             return new TokenResponse { AccessToken = token };
+        }
+
+        public async Task<UserWithId> GetProfile(string username)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserName == username);
+
+            if (user == null) 
+                throw new InvalidLoginException();
+
+            var characters = await _context.Characters.Where(c => c.UserId == user.Id).Select(c => c.Id).ToListAsync();
+
+            var userDto = _mapper.Map<UserWithId>(user);
+            userDto.characters = characters;
+
+            return userDto;
         }
 
         public async Task<UsersList> GetListOfUsers()
@@ -77,7 +95,14 @@ namespace DndCharacterSheetAPI.Services
             var users = await _context.Users.ToListAsync();
 
             var userWithIds = new List<UserWithId>();
-            users.ForEach(u => userWithIds.Add(_mapper.Map<UserWithId>(u)));
+
+            foreach(var user in users)
+            {
+                var userDto = _mapper.Map<UserWithId>(user);
+                userDto.characters = await _context.Characters.Where(c => c.UserId == user.Id).Select(c => c.Id).ToListAsync();
+
+                userWithIds.Add(userDto);
+            }
 
             return new UsersList { Users = userWithIds };
         }

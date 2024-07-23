@@ -24,6 +24,7 @@ namespace DndCharacterSheetAPI.Controllers
 
         [HttpGet]
         [Authorize(Policy = "Privileged")]
+        [Route("GetAllCharacters")]
         public async Task<CharactersList> GetAllCharacters()
         {
             return await _characterService.GetAllCharacters();

@@ -7,6 +7,7 @@ using DndCharacterSheetAPI.Middleware;
 using DndCharacterSheetAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Data;
@@ -21,6 +22,8 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.Configure<JwtConfigurations>(builder.Configuration.GetSection("JwtConfigurations"));
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -58,11 +61,11 @@ builder.Services.AddAuthentication(options =>
 {
     o.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidIssuer = JwtConfigurations.Issuer,
-        ValidAudience = JwtConfigurations.Audience,
+        ValidIssuer = builder.Configuration.GetSection("JwtConfigurations").GetValue<string>("Issuer"),
+        ValidAudience = builder.Configuration.GetSection("JwtConfigurations").GetValue<string>("Audience"),
         ValidateAudience = true,
         ValidateIssuer = true,
-        IssuerSigningKey = JwtConfigurations.GetSymmetricSecurityKey(),
+        IssuerSigningKey = JwtConfigurations.GetSymmetricSecurityKey(builder.Configuration.GetSection("JwtConfigurations").GetValue<string>("Key")),
         ValidateIssuerSigningKey = true,
         ValidateLifetime = true,
         LifetimeValidator = (before, expires, token, parameters) =>
@@ -100,6 +103,14 @@ builder.Services.AddHttpClient<IExternalSystemService, ExternalSystemService>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        builder => builder.WithOrigins("http://localhost:3000")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -111,6 +122,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("AllowSpecificOrigin");
 
 app.UseAuthentication();
 

@@ -10,6 +10,7 @@ namespace DndCharacterSheetAPI.Application.Interfaces
         Task<TokenResponse> Register(UserRegisterModel userDto);
         Task<TokenResponse> Login(LoginCredentials login);
         Task<UsersList> GetListOfUsers();
+        Task<UserWithId> GetProfile(string username);
         Task<Response> ChangeRole(Guid userId, Roles role);
     }
 }

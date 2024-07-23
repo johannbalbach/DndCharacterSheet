@@ -8,6 +8,7 @@ using DndCharacterSheetAPI.Models.Exceptions;
 using DndCharacterSheetAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
 
 
 namespace DndCharacterSheetAPI.Controllers
@@ -23,6 +24,7 @@ namespace DndCharacterSheetAPI.Controllers
             _userService = userService;
         }
 
+        [Authorize(Policy = "Admin")]
         [HttpPost]
         public async Task<ActionResult<TokenResponse>> Register(UserRegisterModel userDto)
         {
@@ -33,6 +35,17 @@ namespace DndCharacterSheetAPI.Controllers
         public async Task<ActionResult<TokenResponse>> Login([FromBody] LoginCredentials login)
         {
             return await _userService.Login(login);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<ActionResult<UserWithId>> Profile()
+        {
+            var usernameClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Name.ToString())?.Value;
+            if (usernameClaim == null)
+                throw new InvalidTokenException("Token not found");
+
+            return await _userService.GetProfile(usernameClaim);
         }
 
         [HttpGet]
