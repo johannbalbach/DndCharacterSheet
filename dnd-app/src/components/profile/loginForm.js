@@ -34,14 +34,14 @@ const LoginForm = () => {
       }, [loginError]);
 
       return (
-        <Container className="d-flex justify-content-center" style={{ height: '75vh' }}>
-          <Row className="col-md-11 col-lg-9 col-xl-8 col-xxl-7 p-3 mb-6">
+        <Container className="d-flex justify-content-center">
+          <Row className="col-md-11 col-lg-9 col-xl-8 col-xxl-7 p-3 mb-6 shadow p-3 bg-body rounded mt-4">
             <Col xs={12}>
               <div className="mb-6 fs-2 h3"> Авторизация </div>
               <Form id="LoginForm" className="needs-validation" onSubmit={handleSubmit}>
                 <FormField
                   controlId="username"
-                  label="Username:"
+                  label="Никнейм:"
                   value={username.value}
                   onChange={(e) => setUsername({ value: e.target.value, isValid: e.target.value.match(e.target.pattern) })}
                   type="text"
@@ -54,10 +54,8 @@ const LoginForm = () => {
                   value={password.value}
                   onChange={async (e) => setPassword({ value: e.target.value, isValid: e.target.value.match(e.target.pattern) })}
                   type="password"
-                  isValid={password.isValid}
-                  pattern="^(?=.*\d).{6,}$"
-                  feedbackText="Пароль должен содержать хотя бы одну цифру и шесть знаков"/>
-                <Button variant="primary" type="submit" id="loginBtn" style={{ backgroundColor: loginError ? 'red' : '' }}>
+                  isValid={true}/>
+                <Button variant="primary" type="submit" id="loginBtn" className="col-12 mt-3 mb-3" style={{ backgroundColor: loginError ? 'red' : '' }}>
                   {loginError ? 'Неправильный логин или пароль' : 'Войти'}
                 </Button>
               </Form>

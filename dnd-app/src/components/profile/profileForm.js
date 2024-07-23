@@ -28,14 +28,17 @@ const ProfileForm = () => {
           <Col xs={12}>
             <div className="mb-6 fs-2 h3"> Профиль </div>
             <Form id="profileForm">
-                <FormField
-                disabled
-                readOnly
-                controlId="username"
-                label="Логин:"
-                value={username}
-                type="text"
-                colSize={9}/>
+              <Form.Group as={Row} className="mb-3" controlId="username">
+                <Form.Label column sm="3">Логин:</Form.Label>
+                <Col sm="9">
+                  <Form.Control column sm="9"
+                    disabled
+                    readOnly
+                    type="text"
+                    value={username}
+                  />
+                </Col>
+              </Form.Group>
               <Form.Group as={Row} className="mb-3" controlId="role">
                 <Form.Label column sm="3">Роль:</Form.Label>
                 <Col sm="9">

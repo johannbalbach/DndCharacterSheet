@@ -42,7 +42,7 @@ const NavbarPanel = () => {
                     {isAuthenticated && (
                         <Nav className="me-auto" activeKey={location.pathname.split('/')[1]}>
                             <Nav.Link as={Link} to="/patients">Библиотека</Nav.Link>
-                            <Nav.Link as={Link} to="/consultations">Создать персонажа</Nav.Link>
+                            <Nav.Link as={Link} to="/create-character">Создать персонажа</Nav.Link>
                             <Nav.Link as={Link} to="/reports">Мои персонажи</Nav.Link>
                         </Nav>
                     )}

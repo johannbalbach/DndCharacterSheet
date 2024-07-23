@@ -8,6 +8,16 @@ async function registerUser(user){
     localStorage.setItem('token', response.data.token);
     window.location.href = '/';
 };
+//body example:
+// {
+//   "password": "string",
+//   "userName": "string",
+//   "userRole": "Player"
+// }
+//response example:
+// {
+//     accessToken	string
+// }
 
 async function loginUser(loginCredentials){
     console.log(loginCredentials);
@@ -15,6 +25,14 @@ async function loginUser(loginCredentials){
     localStorage.setItem('token', response.data.accessToken);
     window.location.href = '/'; 
 };
+
+// {
+//     "userName": "string",
+//     "password": "string"
+//   }
+//   {
+//     "accessToken": "string"
+//   }
 
 async function logout() {
     //await api.post(`${apiBaseUrl}/logout`);
@@ -26,11 +44,33 @@ async function getListOfUsers(){
     const response = await api.get(`${apiBaseUrl}/GetListOfUsers`);
     return response.data;
 };
+//response example
+// {
+//     "users": [
+//       {
+//         "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//         "userName": "string",
+//         "userRole": "Player",
+//         "characters": [
+//           "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+//         ]
+//       }
+//     ]
+//   }
 
 async function getProfile(){  
     const response = await api.get(`${apiBaseUrl}/Profile`);
     return response.data;
 };
+//response example
+// {
+//     "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//     "userName": "string",
+//     "userRole": "Player",
+//     "characters": [
+//       "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+//     ]
+//   }
 
 async function changeUserRole (role){  
     const response = await api.post(`${apiBaseUrl}/ChangeRole`, role);

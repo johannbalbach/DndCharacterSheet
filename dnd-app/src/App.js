@@ -8,6 +8,8 @@ import MainContent from './components/MainContent';
 import LoginForm from './components/profile/loginForm';
 import ProfileForm from './components/profile/profileForm';
 import Navbar from './components/Navbar';
+import CharacterForm from './components/characters/characterForm';
+import CharacterView from './components/characters/characterView';
 
 
 function App() {
@@ -22,12 +24,8 @@ function App() {
           <Route path="/login" element={<LoginForm />} />
           {/* <Route path="/register" element={<RegisterForm />} /> */}
           <Route path="/profile" element={<ProfileForm/>}/>
-          {/* <Route path="/patients" element={<PatientsList/>}/>
-          <Route path="/patient/:id" element={<PatientCard/>}/>
-          <Route path="/inspection/create" element={<CreateInspection/>}/>
-          <Route path="/inspection/:id" element={<InspectionDetails/>}/>
-          <Route path="/reports" element={<ReportsPage/>}/>
-          <Route path="/consultations" element={<ConsultationPage/>}/> */}
+          <Route path="/characters/:id" element={<CharacterView/>} />
+          <Route path="/create-character" element={<CharacterForm/>}/>
         </Routes>
       </main>
     </div>

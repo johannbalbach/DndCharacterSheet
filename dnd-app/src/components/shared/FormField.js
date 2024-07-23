@@ -6,7 +6,7 @@ const FormField = ({ controlId, label, value, onChange, type, placeholder, isVal
     <Form.Group as={Row} className="mb-3" controlId={controlId}>
       {colSize > 0 ? (
         <>
-          <Form.Label column sm={12 - colSize}>{label}</Form.Label>
+          <Form.Label column sm={12 - colSize} className="justify-content-left">{label}</Form.Label>
           <Col sm={colSize}>
             <InnerForm value={value} onChange={onChange} type={type} placeholder={placeholder} isValid={isValid} pattern={pattern} feedbackText={feedbackText} max={max}/>
           </Col>
